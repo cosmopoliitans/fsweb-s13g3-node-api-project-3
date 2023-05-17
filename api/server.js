@@ -3,24 +3,17 @@ const express = require("express");
 const server = express();
 
 const usersRouter = require("./users/users-router");
-const { logger } = require("./middleware/middleware");
+const middleWare = require("./middleware/middleware");
 
 // ekspres'in varsayılan olarak istek gövdelerinde JSON'u ayrıştıramayacağını unutmayın
 
 server.use(express.json());
-server.use(logger);
+server.use(middleWare.logger);
 
 // global ara yazılımlar ve kullanıcı routelarının buraya bağlanması gerekir
-server.use("/api/users", usersRouter);
 
 server.get("/", (req, res) => {
   res.send(`<h2>Biraz ara yazılım yazalım!</h2>`);
 });
-
-server.use((err, req, res, next) => {
-  res
-    .status(err.status || 500)
-    .json({ message: err.message || "Server error!.." });
-});
-
+server.use("/api/users", usersRouter);
 module.exports = server;
