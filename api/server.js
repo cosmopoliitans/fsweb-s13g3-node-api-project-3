@@ -17,4 +17,10 @@ server.get("/", (req, res) => {
   res.send(`<h2>Biraz ara yazılım yazalım!</h2>`);
 });
 
+server.use((err, req, res, next) => {
+  res
+    .status(err.status || 500)
+    .json({ message: err.message || "Server error!.." });
+});
+
 module.exports = server;
